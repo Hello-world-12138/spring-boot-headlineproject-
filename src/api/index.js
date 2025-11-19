@@ -1,4 +1,5 @@
 import request from "../utils/request/"
+import { getToken } from "../utils/token-utils";  // 新增：导入 getToken 用于传递 token 到 header
 
 // portal/findAllTypes
 //获取分类列表
@@ -39,8 +40,14 @@ export const getLogin = (info) => {
   return request.post("user/login",info);
 };
 //获取用户信息的接口
-export const getUserInfo = (info) => {
-  return request.get("user/getUserInfo");
+export const getUserInfo = () => {  // 修改：移除无用参数 info，直接返回；URL 改为 "user/loginInfo"；添加 token 到 header
+  return request({
+    url: "user/loginInfo",
+    method: 'get',
+    headers: {
+      Authorization: getToken()  // 传递 token 到 header（后端 @RequestHeader String token）
+    }
+  });
 };
 
 //注册校验的接口  user/checkUserName
@@ -86,4 +93,3 @@ export const saveOrAddNews = (news) => {
 export const issueNews = (news) => {
   return request.post("headline/publish",news)
 }
-

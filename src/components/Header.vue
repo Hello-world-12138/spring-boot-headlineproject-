@@ -206,21 +206,3 @@ const handlerNews = async () => {
   align-items: center;
 }
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

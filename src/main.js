@@ -1,4 +1,3 @@
-
 import { createApp } from 'vue'
 import ElementPlus from 'element-plus'
 import zhCn from 'element-plus/es/locale/lang/zh-cn'
@@ -18,4 +17,3 @@ app.use(ElementPlus, {
 app.use(pinia)
 app.use(router)
 app.mount('#app')
-

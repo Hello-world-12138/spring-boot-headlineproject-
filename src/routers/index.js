@@ -1,47 +1,39 @@
-import { createRouter, createWebHistory } from "vue-router";
-import { staticRoutes } from "./routes";
-import { useUserInfoStore } from '../stores/userInfo';
+import { createRouter, createWebHistory } from 'vue-router';
+import { staticRoutes } from './routes';
+import { getToken } from '../utils/token-utils';
 import pinia from '../stores';
-import { getToken, removeToken } from '../utils/token-utils';
-import { ElMessage } from 'element-plus';
-
-
+import { useUserInfoStore } from '../stores/userInfo';
 
 const router = createRouter({
   history: createWebHistory(),
   routes: staticRoutes,
 });
 
-const userInfoStore = useUserInfoStore(pinia)
+const userInfoStore = useUserInfoStore(pinia);
 
-//全局前置守卫
+// 全局前置守卫
 router.beforeEach(async (to, from, next) => {
-  const token = getToken()
-  const userInfo = !!userInfoStore.nickName
+  const token = getToken();
   if (token) {
-    if (to.path == "/login") {
-      next({ path: "/" })
+    // 已登录用户访问 login/register 直接跳首页
+    if (to.name === 'Login' || to.name === 'Register') {
+      next({ name: 'HeadlineNews' });
     } else {
-       if (userInfo) {
-      next()
-       } else {
-         try {
-        await userInfoStore.getInfo()
-       next()
-      } catch (error) {
-        removeToken()
+      if (userInfoStore.nickName) {
+        next();
+      } else {
+        try {
+          await userInfoStore.getInfo();
+          next();
+        } catch (err) {
+          userInfoStore.initUserInfo();
+          next({ name: 'Login' });
+        }
       }
     }
-    }
   } else {
-   next()
+    next(); // 没有 token 可以访问任意页面
   }
 });
 
-// //使用全局后置钩子配置关闭进度条
-// router.afterEach(() => {
-//   NProgress.done();
-// });
-
-// 导出路由
 export default router;

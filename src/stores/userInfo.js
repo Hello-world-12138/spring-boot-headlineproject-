@@ -1,4 +1,3 @@
-
 import { defineStore } from 'pinia';
 import { getToken, removeToken, setToken } from '../utils/token-utils';
 import { getLogin,getUserInfo } from '../api/index';
@@ -25,7 +24,9 @@ export const useUserInfoStore = defineStore('userInfo', {
       const token = result.token
       
       this.token = token
+
       setToken(token)
+      await this.getInfo();
     },
     async getInfo () {
       const result = await getUserInfo()
