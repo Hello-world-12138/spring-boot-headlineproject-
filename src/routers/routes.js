@@ -33,4 +33,15 @@ export const staticRoutes = [
     component: () => import("../pages/addOrModifyNews/index.vue"),
     name: "addOrModifyNews",
   },
+
+  {
+  path: "/mycenter",
+  component: () => import("../pages/MyCenter/index.vue"),
+  name: "MyCenter",
+},
+{
+  path: "/browsehistory",
+  component: () => import("../pages/BrowseHistory/index.vue"),
+  name: "BrowseHistory",
+},
 ];

@@ -28,8 +28,8 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item @click="handlerNews">发布新闻</el-dropdown-item>
-              <el-dropdown-item>个人中心</el-dropdown-item>
-              <el-dropdown-item>浏览记录</el-dropdown-item>
+             <el-dropdown-item @click="toMyCenter">个人中心</el-dropdown-item>
+             <el-dropdown-item @click="toBrowseHistory">浏览记录</el-dropdown-item>
               <el-dropdown-item @click="Logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </template>
@@ -94,6 +94,8 @@ const getList = async () => {
   })
   findAllTypeList.value = result
 }
+const toMyCenter = () => router.push({ name: "MyCenter" })
+const toBrowseHistory = () => router.push({ name: "BrowseHistory" })
 // 页面挂载的生命周期回调
 onUpdated(() => {
   nickName.value = userInfoStore.nickName

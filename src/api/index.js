@@ -11,16 +11,10 @@ export const getfindNewsPageInfo = (info) => {
   return request.post("portal/findNewsPage",info);
 };
 // 查看头条详情
-export const getshowHeadlineDetail = (id) => {
-    return request({
-        method: "post",
-        url: "portal/showHeadlineDetail",
-        headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-        },
-         data:`hid=${id}`
-  });
-};
+// api/index.js → 完全替换 getshowHeadlineDetail
+export const getshowHeadlineDetail = (hid) => {
+  return request.post("portal/showHeadlineDetail", { hid })
+}
 
 //删除的回调
 // headline/removeByHid
@@ -92,4 +86,14 @@ export const saveOrAddNews = (news) => {
 // headline/publish
 export const issueNews = (news) => {
   return request.post("headline/publish",news)
+}
+
+// 个人中心 - 我发布的
+export const getMyHeadlines = () => {
+  return request.get("headline/my")
+}
+
+// 浏览记录
+export const getBrowseHistory = () => {
+  return request.get("headline/browseHistory")
 }
