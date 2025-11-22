@@ -123,38 +123,53 @@ const Modify = (hid) => {
 
 <style lang="less" scoped>
 .container {
-  width: 1200px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  margin: 40px auto;           /* 完美水平居中 */
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center;         /* 所有内容垂直居中 */
+}
 
-  // 列表样式
-  .listItem {
-    .containerItem {
-      margin-top: 20px;
-      border-radius: 10px;
-      border: 2px solid #ebebeb;
-      width: 600px;
-      height: 120px;
+.listItem {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;         /* 卡片水平居中 */
+}
 
-      div {
-        margin-top: 10px;
-      }
+.containerItem {
+  background: white;
+  color: #333;
+  border-radius: 20px;
+  padding: 25px;
+  width: 100%;
+  max-width: 700px;            /* 卡片最大700px，完美居中 */
+  margin: 30px 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s ease;
 
-      .text {
-        margin-left: 15px;
-        color: #353a3f;
-      }
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(30, 60, 114, 0.4);
+  }
 
-      .detail {
-        span {
-          margin-left: 15px;
-          color: #8b778a;
-          font-size: 14px;
-        }
-      }
-    }
+  .text {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1e3c72;
+    margin-bottom: 15px;
+  }
+
+  .detail span {
+    color: #666;
+    font-size: 14px;
+  }
+
+  .el-button {
+    border-radius: 25px;
+    font-weight: bold;
   }
 }
 </style>

@@ -112,87 +112,31 @@ onMounted(loadDetail)
 <style lang="less" scoped>
 .seeDetails {
   width: 1200px;
-  margin: 0 auto;
-  padding: 30px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 16px;
-}
+  margin: 40px auto;
 
-.headline-content {
-  width: 800px;
-  background: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
-  margin-bottom: 40px;
-
-  h4 {
-    font-size: 28px;
-    margin: 0 0 20px 0;
-    color: #1a1a1a;
-  }
-
-  .meta {
-    margin-bottom: 20px;
-    span {
-      margin-right: 20px;
-      color: #8d91aa;
-      font-size: 14px;
-    }
-  }
-
-  .article p {
-    line-height: 2;
+  .headline-content, .comment-section {
+    background: white;
     color: #333;
-    text-align: justify;
-  }
-}
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    margin-bottom: 40px;
 
-.comment-section {
-  width: 800px;
-  background: #fff;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    h4, h3 {
+      font-size: 28px;
+      background: linear-gradient(90deg, #1e3c72, #2a5298);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 20px;
+    }
 
-  h3 {
-    margin: 0 0 20px 0;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
-  }
+    .meta span, .comment-item .time {
+      color: #666;
+    }
 
-  .add-comment {
-    margin-bottom: 30px;
-  }
-
-  .comment-list {
-    .comment-item {
-      padding: 18px 0;
-      border-bottom: 1px dashed #eee;
-
-      &:last-child {
-        border-bottom: none;
-      }
-
-      .user-info {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 8px;
-        font-size: 14px;
-        color: #666;
-
-        .time {
-          color: #999;
-        }
-      }
-
-      .content {
-        margin: 0;
-        color: #333;
-        line-height: 1.6;
-      }
+    .article p, .comment-item .content {
+      color: #444;
+      line-height: 2;
     }
   }
 }

@@ -26,5 +26,16 @@ const isHeader = computed(() => {
 </script>
 
 <style lang="less" scoped>
-  
+html, body, #app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);  /* 深蓝渐变，超稳！ */
+  color: white;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+#app {
+  min-height: 100vh;
+}
 </style>

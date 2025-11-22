@@ -130,81 +130,124 @@ const handlerNews = async () => {
 }
 </script>
 
-<style>
-.el-dropdown {
-  vertical-align: top;
-  width: 100px;
-}
-
-.el-dropdown+.el-dropdown {
-  margin-left: 15px;
-}
-
-.el-icon-arrow-down {
-  font-size: 12px;
-}
-</style>
-
 <style lang="less" scoped>
 .headerContainer {
   width: 100%;
-  height: 60px;
-  background: #212529;
+  height: 70px;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 60px;               /* 左右内边距加大 */
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  /* ==================== 左侧导航 ==================== */
   .left {
     ul {
       display: flex;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
       li {
-        list-style: none;
-        margin-left: 20px;
-        a:-webkit-any-link {
+        margin: 0 30px;
+
+        a {
+          color: white !important;
+          font-size: 18px;
+          font-weight: 600;
           text-decoration: none;
-          color: #59646b;
-          &.active {
-            color: #c0adab;
+          transition: all 0.3s;
+          position: relative;
+          padding: 8px 0;
+
+          &.active,
+          &:hover {
+            color: #ffd700 !important;
+          }
+
+          &.active::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #ffd700;
+            border-radius: 2px;
           }
         }
       }
     }
   }
+
+  /* ==================== 右侧：彻底解决“你好，xxx”靠右问题 ==================== */
   .right {
-    .containerButton {
-      display: flex;
-      align-items: center;
-    }
-    line-height: 60px;
     display: flex;
-    flex-wrap: nowrap;
+    align-items: center;
+    gap: 40px;                     /* 搜索框和用户按钮之间加大间距 */
+
+    /* 搜索框 */
     .rightInput {
-      display: flex;
-       align-items: center;
+      flex: 0 0 240px;             /* 固定宽度 */
+
+      :deep(.el-input__wrapper) {
+        background: rgba(255, 255, 255, 0.2) !important;
+        border-radius: 30px;
+      }
+
       :deep(.el-input__inner) {
-        height: 30px;
-        width: 150px;
+        color: white !important;
+        height: 44px;
+        font-size: 15px;
+      }
+
+      :deep(.el-input__inner::placeholder) {
+        color: rgba(255, 255, 255, 0.7) !important;
       }
     }
-    .btn-dropdown{
-      display: flex;
-      align-items: center;
+
+    /* 你好，xxx 下拉按钮 - 重点解决靠右问题 */
+    .btn-dropdown {
+      min-width: 200px;            /* 强制宽度，绝不被挤压 */
+      flex-shrink: 0;              /* 不允许被压缩 */
+
+      .el-button {
+        background: rgba(255, 255, 255, 0.18) !important;
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        color: white !important;
+        border-radius: 30px;
+        height: 44px;
+        font-weight: bold;
+        padding: 0 30px !important;      /* 左右内边距超大 */
+        min-width: 190px;                /* 按钮最小宽度 */
+        white-space: nowrap;
+        overflow: visible;
+        justify-content: center;
+        font-size: 16px;
+        letter-spacing: 1px;
+      }
     }
-    :deep(.el-button) {
-      margin: 0 0 0 10px;
+
+    /* 未登录时的登录注册按钮 */
+    .containerButton {
       display: flex;
-      justify-content: center;
-      align-items: center;
+      gap: 18px;
+
+      .el-button {
+        border-radius: 30px;
+        font-weight: bold;
+        padding: 0 22px;
+        height: 44px;
+      }
     }
   }
-}
-
-
-.example-showcase .el-dropdown + .el-dropdown {
-  margin-left: 15px;
-}
-.example-showcase .el-dropdown-link {
-  cursor: pointer;
-  color: var(--el-color-primary);
-  display: flex;
-  align-items: center;
 }
 </style>
