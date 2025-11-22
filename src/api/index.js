@@ -97,3 +97,13 @@ export const getMyHeadlines = () => {
 export const getBrowseHistory = () => {
   return request.get("headline/browseHistory")
 }
+
+// 发表评论
+export const addComment = (comment) => {
+  return request.post("comment/add", comment)
+}
+
+// 获取评论列表
+export const getCommentList = (hid) => {
+  return request.get("comment/list", { params: { hid } })
+}
