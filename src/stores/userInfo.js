@@ -1,47 +1,41 @@
-import { defineStore } from 'pinia';
+﻿import { defineStore } from 'pinia';
 import { getToken, removeToken, setToken } from '../utils/token-utils';
-import { getLogin,getUserInfo } from '../api/index';
-
+import { getLogin, getUserInfo } from '../api/index';
 
 /**
  * 用户信息
  * @methods setUserInfos 设置用户信息
  */
 export const useUserInfoStore = defineStore('userInfo', {
-
-	state: () => ({
+  state: () => ({
     token: getToken(),
     nickName: '',
     uid: '',
+    role: 0,
   }),
 
-	actions: {
+  actions: {
     // 登陆的异步action
-    async login (loginForm) {
-       // 发送登陆的请求
-      const result = await getLogin(loginForm)
-      // 请求成功后, 取出token保存  pinia和local中
-      const token = result.token
-      
-      this.token = token
-
-      setToken(token)
+    async login(loginForm) {
+      const result = await getLogin(loginForm);
+      const token = result.token;
+      this.role = result.role ?? 0;
+      this.token = token;
+      setToken(token);
       await this.getInfo();
     },
-    async getInfo () {
-      const result = await getUserInfo()
-      this.nickName = result.loginUser.nickName
-      this.uid = result.loginUser.uid
+    async getInfo() {
+      const result = await getUserInfo();
+      this.nickName = result.loginUser.nickName;
+      this.uid = result.loginUser.uid;
+      this.role = result.loginUser.role ?? 0;
     },
-    initUserInfo(){
-      removeToken()
-      this.nickName = ""
-      this.uid = ""
-      console.log('1111111111');
-      
-    }
-
+    initUserInfo() {
+      removeToken();
+      this.nickName = "";
+      this.uid = "";
+      this.token = "";
+      this.role = 0;
+    },
   },
-  
-
 });

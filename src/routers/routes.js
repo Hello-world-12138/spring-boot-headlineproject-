@@ -44,4 +44,9 @@ export const staticRoutes = [
   component: () => import("../pages/BrowseHistory/index.vue"),
   name: "BrowseHistory",
 },
+{
+  path: "/admin",
+  component: () => import("../pages/Admin/index.vue"),
+  name: "Admin",
+},
 ];

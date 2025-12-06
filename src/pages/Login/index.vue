@@ -1,13 +1,13 @@
-<template>
+﻿<template>
   <div class="login-container">
     <el-form
       :model="loginForm"
       ref="formRef"
       label-width="80px"
       class="login-form"
-      :rules="loginRules" 
+      :rules="loginRules"
     >
-      <h2>用户登录</h2>
+      <h2>登录</h2>
       <el-form-item label="用户名" prop="username">
         <el-input
           v-model="loginForm.username"
@@ -57,7 +57,7 @@ const loginForm = ref({
 // 校验规则
 const validateUsername = (rule: any, value: any, callback: any) => {
   if (value.length < 4) {
-    callback(new Error('用户名长度不能小于4位'))
+    callback(new Error('用户名长度不能少于4位'))
   } else {
     callback()
   }
@@ -77,24 +77,14 @@ const loginRules = {
 }
 //点击登录的回调
 const login = async () => {
-  // console.log('点击登录');
   await formRef.value?.validate()
   loading.value = true
   try {
-    // await getUserInfo(loginForm.value)
     await userInfoStore.login(loginForm.value)
     router.push({ name: "HeadlineNews" });
   } finally {
     loading.value = false
   }
-  // loading.value = true
-  // const { username, userPwd } = loginForm.value
-  // try {
-  //   await userInfoStore.login(username, userPwd)
-  //   router.push({ path: redirect.value || '/' })
-  // } finally {
-  //   loading.value = false
-  // }
 }
 
 const toRegister = ()=> {

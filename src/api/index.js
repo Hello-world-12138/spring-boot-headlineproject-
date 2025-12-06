@@ -1,4 +1,4 @@
-import request from "../utils/request/"
+import request from "../utils/request"
 import { getToken } from "../utils/token-utils";  // 新增：导入 getToken 用于传递 token 到 header
 
 // portal/findAllTypes

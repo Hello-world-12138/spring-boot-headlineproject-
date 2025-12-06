@@ -1,10 +1,10 @@
-<template>
+﻿<template>
   <div class="headerContainer">
     <!-- 头部左侧区域 -->
     <div class="left">
       <ul>
-        <li @click="HighlightHandler(index,)"  v-for="(item,index) in findAllTypeList" :key="item.tid">
-          <a :class="{ active: item.isHighlight }" href="javascript:;">{{item.tname}}</a>
+        <li @click="HighlightHandler(index)" v-for="(item,index) in findAllTypeList" :key="item.tid">
+          <a :class="{ active: item.isHighlight }" href="javascript:;">{{ item.tname }}</a>
         </li>
       </ul>
     </div>
@@ -12,34 +12,31 @@
     <div class="right">
       <div class="rightInput" style="margin-right: 50px;">
         <el-input v-model="keywords" placeholder="搜索最新头条"></el-input>
-        <!-- <el-button   type="primary">搜索</el-button> -->
       </div>
 
-  
       <!-- 用户登录以后的展示 -->
       <div class="btn-dropdown">
-      <!-- 用户没有登录的时候的展示 -->
-     
-      <div v-if="nickName" style="display: flex; justify-content: center; align-items: center;">
-             <el-dropdown>
-          <el-button type="primary">
-          您好:{{ nickName }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
-          </el-button>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item @click="handlerNews">发布新闻</el-dropdown-item>
-             <el-dropdown-item @click="toMyCenter">个人中心</el-dropdown-item>
-             <el-dropdown-item @click="toBrowseHistory">浏览记录</el-dropdown-item>
-              <el-dropdown-item @click="Logout">退出登录</el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
-      </div>
-       <div v-else class="containerButton">
+        <!-- 用户没有登录的时候的展示 -->
+        <div v-if="nickName" style="display: flex; justify-content: center; align-items: center;">
+          <el-dropdown>
+            <el-button type="primary">
+              您好:{{ nickName }}<el-icon class="el-icon--right"><arrow-down /></el-icon>
+            </el-button>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item @click="handlerNews">发布新闻</el-dropdown-item>
+                <el-dropdown-item @click="toMyCenter">个人中心</el-dropdown-item>
+                <el-dropdown-item @click="toBrowseHistory">浏览记录</el-dropdown-item>
+                <el-dropdown-item v-if="role === 1" @click="toAdmin">管理后台</el-dropdown-item>
+                <el-dropdown-item @click="Logout">退出登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+        <div v-else class="containerButton">
           <el-button size="small" style="background: #212529; color: #aea7a2" @click="toLogin">登录</el-button>
           <el-button size="small" style="background: #ffc107; color: #684802" @click="toRegister">注册</el-button>
         </div>
-      
       </div>
     </div>
   </div>
@@ -54,25 +51,26 @@ export default defineComponent({
 
 <script setup>
 import { getfindAllTypes, isUserOverdue } from '../api/index'
-import { ref, onMounted , getCurrentInstance ,watch, onUpdated} from "vue"
+import { ref, onMounted , getCurrentInstance ,watch, computed} from "vue"
 import { useRouter } from 'vue-router'
 import { ArrowDown } from '@element-plus/icons-vue'
-import { removeToken } from '../utils/token-utils' 
-import pinia from '../stores/index';
+import { removeToken } from '../utils/token-utils'
+import pinia from '../stores/index'
 import { useUserInfoStore } from '../stores/userInfo'
 const userInfoStore = useUserInfoStore(pinia)
-const nickName = ref("")
-// 获取到 全局事件总线
+const nickName = computed(() => userInfoStore.nickName)
+const role = computed(() => userInfoStore.role)
+// 获取全局事件总线
 const { Bus } = getCurrentInstance().appContext.config.globalProperties
 const router = useRouter()
 const keywords = ref("") // 收集搜索最新头条参数
-//监视搜索参数的变化 ,当搜索参数变化的时候给HeadlineNews组件传递数据
+// 监视搜索参数的变化,当搜索参数变化的时候给HeadlineNews组件传递数据
 watch(keywords, (newVal) => {
   Bus.emit('keyword', newVal)
 })
 const findAllTypeList = ref([])//所有头条分类
 const toLogin = () => {
-router.push({ name: "Login" });
+  router.push({ name: "Login" });
 }
 //点击去注册页面
 const toRegister = () => {
@@ -96,10 +94,7 @@ const getList = async () => {
 }
 const toMyCenter = () => router.push({ name: "MyCenter" })
 const toBrowseHistory = () => router.push({ name: "BrowseHistory" })
-// 页面挂载的生命周期回调
-onUpdated(() => {
-  nickName.value = userInfoStore.nickName
-})
+const toAdmin = () => router.push({ name: "Admin" })
 onMounted(() => {
   getList()
 })
@@ -118,8 +113,7 @@ const HighlightHandler = (index) => {
 const Logout = () => {
   removeToken()
   userInfoStore.initUserInfo()
-  nickName.value = ""
-  router.go({ name: "HeadlineNews" });
+  router.push({ name: "HeadlineNews" });
 }
 
 //点击发布新闻的回调
@@ -188,7 +182,7 @@ const handlerNews = async () => {
     }
   }
 
-  /* ==================== 右侧：彻底解决“你好，xxx”靠右问题 ==================== */
+  /* ==================== 右侧 ==================== */
   .right {
     display: flex;
     align-items: center;
@@ -214,7 +208,7 @@ const handlerNews = async () => {
       }
     }
 
-    /* 你好，xxx 下拉按钮 - 重点解决靠右问题 */
+    /* 你好，xxx 下拉按钮 */
     .btn-dropdown {
       min-width: 200px;            /* 强制宽度，绝不被挤压 */
       flex-shrink: 0;              /* 不允许被压缩 */
