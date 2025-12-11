@@ -36,9 +36,13 @@ router.beforeEach(async (to, from, next) => {
   }
   if (needAdmin) {
     ElMessage.warning('权限不足');
-    return next({ name: 'HeadlineNews' });
+    return next({ name: 'Login' });
   }
-  return next();
+  // 未登录且非登录/注册，统一跳转登录
+  if (to.name === 'Login' || to.name === 'Register') {
+    return next();
+  }
+  return next({ name: 'Login' });
 });
 
 export default router;

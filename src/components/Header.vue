@@ -1,6 +1,5 @@
 ﻿<template>
   <div class="headerContainer">
-    <!-- 头部左侧区域 -->
     <div class="left">
       <ul>
         <li @click="HighlightHandler(index)" v-for="(item,index) in findAllTypeList" :key="item.tid">
@@ -8,15 +7,12 @@
         </li>
       </ul>
     </div>
-    <!-- 头部右侧区域 -->
     <div class="right">
       <div class="rightInput" style="margin-right: 50px;">
         <el-input v-model="keywords" placeholder="搜索最新头条"></el-input>
       </div>
 
-      <!-- 用户登录以后的展示 -->
       <div class="btn-dropdown">
-        <!-- 用户没有登录的时候的展示 -->
         <div v-if="nickName" style="display: flex; justify-content: center; align-items: center;">
           <el-dropdown>
             <el-button type="primary">
@@ -52,7 +48,7 @@ export default defineComponent({
 <script setup>
 import { getfindAllTypes, isUserOverdue } from '../api/index'
 import { ref, onMounted , getCurrentInstance ,watch, computed} from "vue"
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import { ArrowDown } from '@element-plus/icons-vue'
 import { removeToken } from '../utils/token-utils'
 import pinia from '../stores/index'
@@ -60,35 +56,38 @@ import { useUserInfoStore } from '../stores/userInfo'
 const userInfoStore = useUserInfoStore(pinia)
 const nickName = computed(() => userInfoStore.nickName)
 const role = computed(() => userInfoStore.role)
-// 获取全局事件总线
 const { Bus } = getCurrentInstance().appContext.config.globalProperties
 const router = useRouter()
-const keywords = ref("") // 收集搜索最新头条参数
-// 监视搜索参数的变化,当搜索参数变化的时候给HeadlineNews组件传递数据
+const route = useRoute()
+const keywords = ref("")
 watch(keywords, (newVal) => {
   Bus.emit('keyword', newVal)
 })
-const findAllTypeList = ref([])//所有头条分类
+const findAllTypeList = ref([])
 const toLogin = () => {
   router.push({ name: "Login" });
 }
-//点击去注册页面
 const toRegister = () => {
   router.push({ name: "Register" });
 }
 const getList = async () => {
   let result = await getfindAllTypes()
-  // 遍历数据添加高亮标识
   result.forEach((item) => {
     item.tid = item.tid
     item.tname = item.tname
     item.isHighlight = false
   })
-  // 添加微头条数据
+  // 默认“微头条”入口
   result.unshift({
     isHighlight: true,
     tid: 0,
     tname: "微头条"
+  })
+  // 在“微头条”后插入固定的“精选”入口（tid=-999）
+  result.splice(1, 0, {
+    isHighlight: false,
+    tid: -999,
+    tname: "精选"
   })
   findAllTypeList.value = result
 }
@@ -99,26 +98,31 @@ onMounted(() => {
   getList()
 })
 
-//点击切换高亮的回调(排他思想)
 const HighlightHandler = (index) => {
+  // 1. 高亮当前导航
   findAllTypeList.value.forEach((item) => {
     item.isHighlight = false
   })
-  // 切换高亮的时候把tid传给HeadlineNews组件
-  findAllTypeList.value[index].isHighlight = true
-  Bus.emit('tid', findAllTypeList.value[index].tid)
+  const current = findAllTypeList.value[index]
+  if (!current) return
+  current.isHighlight = true
+
+  // 2. 通知首页根据 tid 过滤
+  Bus.emit('tid', current.tid)
+
+  // 3. 如果当前不在头条列表页面，则跳转到头条首页
+  if (route.name !== 'HeadlineNews') {
+    router.push({ name: 'HeadlineNews' })
+  }
 }
 
-// 点击退出登录的回调
 const Logout = () => {
   removeToken()
   userInfoStore.initUserInfo()
-  router.push({ name: "HeadlineNews" });
+  router.push({ name: "Login" });
 }
 
-//点击发布新闻的回调
 const handlerNews = async () => {
-  //发送请求判断用户是否token过期
   await isUserOverdue()
   router.push({ name: "addOrModifyNews" });
 }
@@ -135,13 +139,12 @@ const handlerNews = async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 60px;               /* 左右内边距加大 */
+  padding: 0 60px;
   position: sticky;
   top: 0;
   z-index: 999;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 
-  /* ==================== 左侧导航 ==================== */
   .left {
     ul {
       display: flex;
@@ -182,15 +185,13 @@ const handlerNews = async () => {
     }
   }
 
-  /* ==================== 右侧 ==================== */
   .right {
     display: flex;
     align-items: center;
-    gap: 40px;                     /* 搜索框和用户按钮之间加大间距 */
+    gap: 40px;
 
-    /* 搜索框 */
     .rightInput {
-      flex: 0 0 240px;             /* 固定宽度 */
+      flex: 0 0 240px;
 
       :deep(.el-input__wrapper) {
         background: rgba(255, 255, 255, 0.2) !important;
@@ -208,10 +209,9 @@ const handlerNews = async () => {
       }
     }
 
-    /* 你好，xxx 下拉按钮 */
     .btn-dropdown {
-      min-width: 200px;            /* 强制宽度，绝不被挤压 */
-      flex-shrink: 0;              /* 不允许被压缩 */
+      min-width: 200px;
+      flex-shrink: 0;
 
       .el-button {
         background: rgba(255, 255, 255, 0.18) !important;
@@ -220,8 +220,8 @@ const handlerNews = async () => {
         border-radius: 30px;
         height: 44px;
         font-weight: bold;
-        padding: 0 30px !important;      /* 左右内边距超大 */
-        min-width: 190px;                /* 按钮最小宽度 */
+        padding: 0 30px !important;
+        min-width: 190px;
         white-space: nowrap;
         overflow: visible;
         justify-content: center;
@@ -230,7 +230,6 @@ const handlerNews = async () => {
       }
     }
 
-    /* 未登录时的登录注册按钮 */
     .containerButton {
       display: flex;
       gap: 18px;

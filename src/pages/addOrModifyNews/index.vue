@@ -1,4 +1,5 @@
 <template>
+  <div class="page-bg">
   <el-card class="box-card AddNewsContainer">
     <el-form :rules="newsRules" :model="formData" ref="formRef" size="default">
       <el-form-item label="文章标题" prop="title">
@@ -19,6 +20,7 @@
       <el-button type="primary"  @click="handlerSave">保存</el-button>
     </el-form-item>
   </el-card>
+  </div>
 </template>
 
 <script>
@@ -149,8 +151,25 @@ const Obj = {...formData.value}
 </script>
 
 <style lang="less" scoped>
+.page-bg {
+  min-height: 100vh;
+  width: 100%;
+  background-image: url('https://images.pexels.com/photos/701337/pexels-photo-701337.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  padding: 40px 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
 .AddNewsContainer {
-  width: 600px;
-  margin: 150px auto;
+  width: 640px;
+  margin: 40px auto;
+  background: rgba(255,255,255,0.00);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 16px 32px rgba(0,0,0,0.12);
 }
 </style>

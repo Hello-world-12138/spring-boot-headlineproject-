@@ -1,4 +1,5 @@
 <template>
+  <div class="detail-page">
   <div class="seeDetails">
     <!-- 头条详情部分（保持你原来的样式） -->
     <div class="headline-content">
@@ -45,6 +46,7 @@
         <el-empty v-if="commentList.length === 0" description="暂无评论，快来抢沙发~" />
       </div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -110,33 +112,55 @@ onMounted(loadDetail)
 </script>
 
 <style lang="less" scoped>
+.detail-page {
+  min-height: 100vh;
+  width: 100%;
+  background-image: url('https://images.pexels.com/photos/701337/pexels-photo-701337.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  padding: 30px 0 50px;
+}
+
 .seeDetails {
   width: 1200px;
+  max-width: 95%;
   margin: 40px auto;
+  color: #1f2937;
 
-  .headline-content, .comment-section {
-    background: white;
-    color: #333;
+.headline-content, .comment-section {
+    background: radial-gradient(circle at 20% 20%, rgba(255,255,255,0.12), rgba(255,255,255,0.03)) ,
+                rgba(255, 255, 255, 0.25);
+    color: #1f2937;
     padding: 40px;
     border-radius: 20px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-    margin-bottom: 40px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.18);
+    margin-bottom: 30px;
+    backdrop-filter: blur(8px);
 
     h4, h3 {
       font-size: 28px;
-      background: linear-gradient(90deg, #1e3c72, #2a5298);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 20px;
+      color: #1e3c72;
+      margin-bottom: 16px;
     }
 
     .meta span, .comment-item .time {
-      color: #666;
+      color: #1f2937;
+      margin-right: 16px;
     }
 
     .article p, .comment-item .content {
-      color: #444;
-      line-height: 2;
+      color: #1f2937;
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+
+    .comment-item .user-info strong {
+      color: #1f2937;
+    }
+    .comment-item .time {
+      color: #1f2937;
+      margin-left: 12px;
     }
   }
 }

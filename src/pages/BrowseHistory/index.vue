@@ -1,24 +1,26 @@
 <template>
-  <el-page-header @back="goBack" class="page-header">
-    <template #content>
-      <div class="header-content">
-        <span class="title">最近浏览</span>
-      </div>
-    </template>
-  </el-page-header>
+  <div class="page-bg">
+    <el-page-header @back="goBack" class="page-header">
+      <template #content>
+        <div class="header-content">
+          <span class="title">最近浏览</span>
+        </div>
+      </template>
+    </el-page-header>
 
-  <div class="history">
-    <div class="list" v-if="list.length > 0">
-      <div class="item" v-for="item in list" :key="item.hid" @click="toDetail(item.hid)">
-        <h3>{{ item.title }}</h3>
-        <div class="info">
-          <span>{{ item.pageViews }} 浏览</span>
-          <span>{{ item.pastHours }} 小时前浏览</span>
+    <div class="history">
+      <div class="list" v-if="list.length > 0">
+        <div class="item" v-for="item in list" :key="item.hid" @click="toDetail(item.hid)">
+          <h3>{{ item.title }}</h3>
+          <div class="info">
+            <span>{{ item.pageViews }} 浏览</span>
+            <span>{{ item.pastHours }} 小时前浏览</span>
+          </div>
         </div>
       </div>
-    </div>
 
-    <el-empty v-else description="暂无浏览记录" />
+      <el-empty v-else description="暂无浏览记录" />
+    </div>
   </div>
 </template>
 
@@ -47,10 +49,24 @@ onMounted(load)
 </script>
 
 <style lang="less" scoped>
+.page-bg {
+  min-height: 100vh;
+  width: 100%;
+  background-image: url('https://images.pexels.com/photos/701337/pexels-photo-701337.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  padding: 20px 0 40px;
+}
+
 .page-header {
   padding: 20px 40px;
-  background: #fff;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(8px);
   border-bottom: 1px solid #ebeef5;
+  border-radius: 14px;
+  width: 90%;
+  margin: 0 auto 10px auto;
 }
 
 .header-content {
@@ -65,8 +81,14 @@ onMounted(load)
 }
 
 .history {
-  width: 800px;
+  width: 90%;
+  max-width: 900px;
   margin: 30px auto;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(8px);
+  border-radius: 16px;
+  box-shadow: 0 14px 28px rgba(0,0,0,0.1);
+  padding: 20px 24px;
 }
 
 .item {

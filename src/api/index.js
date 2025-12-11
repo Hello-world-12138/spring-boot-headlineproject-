@@ -1,84 +1,84 @@
-import request from "../utils/request"
-import { getToken } from "../utils/token-utils";  // 新增：导入 getToken 用于传递 token 到 header
+﻿import request from "../utils/request";
+import { getToken } from "../utils/token-utils";
 
 // portal/findAllTypes
-//获取分类列表
 export const getfindAllTypes = () => {
   return request.get("portal/findAllTypes");
 };
+
 // 分页带条件查询所有头条
 export const getfindNewsPageInfo = (info) => {
-  return request.post("portal/findNewsPage",info);
+  return request.post("portal/findNewsPage", info);
 };
+
 // 查看头条详情
-// api/index.js → 完全替换 getshowHeadlineDetail
 export const getshowHeadlineDetail = (hid) => {
   return request.post("portal/showHeadlineDetail", { hid })
 }
 
-//删除的回调
 // headline/removeByHid
 export const removeByHid = (id) => {
-    return request({
-         method: "post",
-            url: "headline/removeByHid",
-            headers: {
-            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-            },
-            data:`hid=${id}`
+  return request({
+    method: "post",
+    url: "headline/removeByHid",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+    },
+    data:`hid=${id}`
   })
 };
 
-//登录的接口
+// 登录
 export const getLogin = (info) => {
   return request.post("user/login",info);
 };
-//获取用户信息的接口
-export const getUserInfo = () => {  // 修改：移除无用参数 info，直接返回；URL 改为 "user/loginInfo"；添加 token 到 header
+
+// 获取用户信息
+export const getUserInfo = () => {
   return request({
     url: "user/loginInfo",
     method: 'get',
     headers: {
-      Authorization: getToken()  // 传递 token 到 header（后端 @RequestHeader String token）
+      Authorization: getToken()
     }
   });
 };
 
-//注册校验的接口  user/checkUserName
+// 注册校验 user/checkUserName
 export const registerValidateApi = (username) => {
-    return request({
-         method: "post",
-            url: "user/checkUserName",
-            headers: {
-            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-            },
-            data:`username=${username}`
+  return request({
+    method: "post",
+    url: "user/checkUserName",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+    },
+    data:`username=${username}`
   })
 };
 
-// 注册的接口
+// 注册
 export const registerApi = (userInfo) => {
   return request.post("user/regist",userInfo)
 }
-//判断用户登录过期的接口
+
+// 判断用户登录过期
 export const isUserOverdue = () => {
   return request.get("user/checkLogin")
 }
 
-// 修改头条回显的接口
+// 修改头条回显
 export const getFindHeadlineByHid = (id) => {
-    return request({
-        method: "post",
-        url: "headline/findHeadlineByHid",
-        headers: {
-        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-        },
-         data:`hid=${id}`
+  return request({
+      method: "post",
+      url: "headline/findHeadlineByHid",
+      headers: {
+      "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+      },
+       data:`hid=${id}`
   });
 };
 
-//点击保存修改的回调
-// headline/update
+// 点击保存修改的回调
 export const saveOrAddNews = (news) => {
   return request.post("headline/update",news)
 }
@@ -106,4 +106,11 @@ export const addComment = (comment) => {
 // 获取评论列表
 export const getCommentList = (hid) => {
   return request.get("comment/list", { params: { hid } })
+}
+
+// 轮播图列表
+export const getBannerList = (category) => {
+  return request.get("banner/list", {
+    params: { category }
+  })
 }

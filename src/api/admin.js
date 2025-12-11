@@ -46,3 +46,18 @@ export const getDashboardTrend = (days = 7) => {
 export const getDashboardTopHeadlines = () => {
   return request.get("admin/dashboard/topHeadlines");
 };
+
+/** 轮播管理：列表 */
+export const getAdminBannerList = (params) => {
+  return request.post("banner/admin/list", params);
+};
+
+/** 轮播管理：新增 / 编辑 */
+export const saveAdminBanner = (data) => {
+  return request.post("banner/admin/save", data);
+};
+
+/** 轮播管理：修改状态 */
+export const updateBannerStatus = (id, status) => {
+  return request.post("banner/admin/status", { id, status });
+};
