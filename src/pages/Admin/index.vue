@@ -409,11 +409,13 @@ const stackChart = computed(() => {
   const width = Math.max(320, dates.length > 1 ? dates.length * 60 : 320)
   const step = dates.length > 1 ? width / (dates.length - 1) : width
 
+  const norm = (arr) => (arr || []).map((v) => Number(v || 0))
+
   const series = [
-    { key: 'users', color: '#409EFF', data: trend.value.newUsers || [] },
-    { key: 'headlines', color: '#67C23A', data: trend.value.newHeadlines || [] },
-    { key: 'comments', color: '#E6A23C', data: trend.value.newComments || [] },
-    { key: 'banned', color: '#F56C6C', data: trend.value.newBannedUsers || [] },
+    { key: 'users', color: '#409EFF', data: norm(trend.value.newUsers) },
+    { key: 'headlines', color: '#67C23A', data: norm(trend.value.newHeadlines) },
+    { key: 'comments', color: '#E6A23C', data: norm(trend.value.newComments) },
+    { key: 'banned', color: '#F56C6C', data: norm(trend.value.newBannedUsers) },
   ]
   // 总和用于归一化
   const totals = dates.map((_, idx) => series.reduce((sum, s) => sum + (s.data[idx] || 0), 0))
